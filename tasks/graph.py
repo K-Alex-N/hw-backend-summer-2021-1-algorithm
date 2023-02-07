@@ -1,3 +1,4 @@
+from collections import deque
 from typing import Any
 
 __all__ = (
@@ -28,7 +29,25 @@ class Graph:
         self._root = root
 
     def dfs(self) -> list[Node]:
-        raise NotImplementedError
+
+        def recursive_loop(n: Node, visited: list):
+            for neighbour in n.outbound:
+                if neighbour not in visited:
+                    visited.append(neighbour)
+                    recursive_loop(neighbour, visited)
+
+        visited = [self._root]
+        recursive_loop(self._root, visited)
+        return visited
 
     def bfs(self) -> list[Node]:
-        raise NotImplementedError
+        queue = deque([self._root])
+        visited = [self._root]
+
+        while queue:
+            for neighbour in queue.popleft().outbound:
+                if neighbour not in visited:
+                    visited.append(neighbour)
+                    queue.append(neighbour)
+
+        return visited

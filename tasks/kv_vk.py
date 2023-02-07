@@ -5,7 +5,6 @@ __all__ = (
     'flip_kv_vk_safe',
 )
 
-
 KT = TypeVar('KT')
 KV = TypeVar('KV')
 
@@ -23,7 +22,8 @@ def flip_kv_vk(d: dict[KT, KV]) -> dict[KV, KT]:
         'Москва': 'moscow',
     }
     """
-    raise NotImplementedError
+    return {v: k for k, v in d.items()}
+    # return dict(zip(d.values(), d.keys()))
 
 
 def flip_kv_vk_safe(d: dict[KT, KV]) -> dict[KV, list[KT]]:
@@ -39,4 +39,8 @@ def flip_kv_vk_safe(d: dict[KT, KV]) -> dict[KV, list[KT]]:
         '+3': ['Москва', 'Санкт-Петербург'],
     }
     """
-    raise NotImplementedError
+    d2 = {}
+    for key, value in d.items():
+        d2.setdefault(value, []).append(key)
+
+    return d2
